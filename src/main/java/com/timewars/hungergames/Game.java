@@ -1,13 +1,10 @@
 package com.timewars.hungergames;
 
 import com.timewars.hungergames.classes.myItem;
-import com.timewars.hungergames.files.CustomConfig;
 import com.timewars.hungergames.files.ItemsOperations;
-import jdk.internal.net.http.common.Pair;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -18,22 +15,23 @@ import java.util.LinkedList;
 import java.util.Random;
 
 public class Game {
-    public LinkedList<Location> loc; //потом поменять
+    public LinkedList<Location> loc; //change later
     LinkedList<Boolean> used;
     public LinkedList<mPlayer> players;
-    public int MAXPLAYERS, MAXARTCHANCE;
-    public boolean isGameStarted;
-    public String mapname;
-    public LinkedList< Pair<Integer, Material>> artifacts;
+    public int MAXPLAYERS;
 
-    ItemsOperations itemsOperations;
+
+    public boolean isGameStarted;
+    private String mapname;
+
+    private ItemsOperations itemsOperations;
     private ArrayList<myItem> items;
     private int itemCasinoCounter;
 
     Game(String mapname) {
         players = new LinkedList<>();
         loc = new LinkedList<>();
-        MAXPLAYERS = 2; //подтянуть из базы
+        MAXPLAYERS = 2; //gain from api
         isGameStarted = false;
         this.mapname = mapname;
 
@@ -41,13 +39,13 @@ public class Game {
         items = new ArrayList<>();
         itemCasinoCounter = 0;
 
-        readChests();
+        prepareItems();
+        readFillChests();
         readSpawnSpots();
-        //readArts();
-        PrepareCasinoSpins();
+
     }
 
-    public void readChests() {
+    public void readFillChests() {
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/data?autoReconnect=true&useSSL=false", "root", "");) {
             Statement statement = connection.createStatement();
             Formatter f = new Formatter();
@@ -55,7 +53,7 @@ public class Game {
             while (chests.next()) {
                 Location chest = new Location(Bukkit.getServer().getWorld("world"), chests.getInt(1), chests.getInt(2), chests.getInt(3));
                 if (chest.getBlock().getType() == Material.CHEST) {
-                    FillChest(chest.getBlock());
+                    fillChest(chest.getBlock());
                 }
             }
         } catch (SQLException ex) {
@@ -76,22 +74,7 @@ public class Game {
         }
     }
 
-    public void readArts() {
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/data?autoReconnect=true&useSSL=false", "root", "");) {
-            Statement statement = connection.createStatement();
-            MAXARTCHANCE = 0;
-            Formatter f = new Formatter();
-            ResultSet arts = statement.executeQuery("SELECT art, tic FROM art");
-            while(arts.next()) {
-                MAXARTCHANCE += arts.getInt(2);
-                artifacts.add(new Pair<Integer, Material>(MAXARTCHANCE, Material.getMaterial(arts.getString(1))));
-            }
-        } catch (SQLException ex) {
-            System.out.println(ex);
-        }
-    }
-
-    public void PrepareCasinoSpins()
+    public void prepareItems()
     {
         for ( myItem item : itemsOperations.getItems())
         {
@@ -102,7 +85,7 @@ public class Game {
         }
     }
 
-    public void FillChest(Block chestBlock)
+    public void fillChest(Block chestBlock)
     {
         Chest chest = (Chest) chestBlock;
         chest.getInventory().clear();
@@ -132,20 +115,6 @@ public class Game {
 
                 chest.getInventory().setItem(position, spawnedItem);
             }
-        }
-    }
-
-    public void fillChest(Block chest) {
-        for(int i = 0; i < 4 + Math.random() * 4; i++) {
-            int ticketNum = (int) (Math.random() * MAXARTCHANCE);
-            Material spawnedItem = null;
-            for (Pair<Integer, Material> it : artifacts) {
-                if (ticketNum < it.first) {
-                    spawnedItem = it.second;
-                }
-            }
-            ItemStack item = new ItemStack(spawnedItem);
-            ((Chest) chest).getInventory().addItem(item);
         }
     }
 
