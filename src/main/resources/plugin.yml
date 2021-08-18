@@ -1,0 +1,10 @@
+name: HungerGames
+version: ${project.version}
+main: com.timewars.hungergames.HungerGames
+api-version: 1.17
+prefix: HG
+authors: [ Heghw ]
+description: Hunger Games plugin for timewars
+commands:
+    hg:
+      description: Main HungerGames command
