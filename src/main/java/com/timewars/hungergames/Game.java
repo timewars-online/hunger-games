@@ -31,21 +31,19 @@ public class Game {
     Game(String mapname) {
         players = new LinkedList<>();
         loc = new LinkedList<>();
-        MAXPLAYERS = 2; //gain from api
+        MAXPLAYERS = 1; //gain from api
         isGameStarted = false;
         this.mapname = mapname;
 
         itemsOperations = new ItemsOperations();
         items = new ArrayList<>();
         itemCasinoCounter = 0;
-
         prepareItems();
-        readFillChests();
+        readAndFillChests();
         readSpawnSpots();
-
     }
 
-    public void readFillChests() {
+    public void readAndFillChests() {
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/data?autoReconnect=true&useSSL=false", "root", "");) {
             Statement statement = connection.createStatement();
             Formatter f = new Formatter();
@@ -87,7 +85,7 @@ public class Game {
 
     public void fillChest(Block chestBlock)
     {
-        Chest chest = (Chest) chestBlock;
+        Chest chest = (Chest) chestBlock.getState();
         chest.getInventory().clear();
 
         for(int i = 0; i < 4 + Math.random() * 4; i++)

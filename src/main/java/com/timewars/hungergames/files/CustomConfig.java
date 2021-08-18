@@ -14,7 +14,7 @@ public class CustomConfig {
 
     public static void setup()
     {
-        file = new File(Bukkit.getServer().getPluginManager().getPlugin("DataReminder").getDataFolder(), "items.yml");
+        file = new File(Bukkit.getServer().getPluginManager().getPlugin("HungerGames").getDataFolder(), "items.yml");
 
         if(!file.exists())
         {
