@@ -1,6 +1,5 @@
 package com.timewars.hungergames;
 
-import com.timewars.hungergames.Commands.mkNorm;
 import com.timewars.hungergames.EventListeners.*;
 
 import com.timewars.hungergames.classes.MainCommand;

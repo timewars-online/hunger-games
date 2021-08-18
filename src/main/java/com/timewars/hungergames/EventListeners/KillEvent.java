@@ -16,10 +16,7 @@ public class KillEvent implements Listener {
     void onDeath(EntityDamageByEntityEvent event) {
         Entity damagedEnt = event.getEntity();
         Entity killerEnt = event.getDamager();
-
-
-        if (damagedEnt instanceof Player & killerEnt instanceof Player) {
-            if ((((Player) damagedEnt).getHealth() - event.getDamage() <= 0)) {
+        if (damagedEnt instanceof Player && killerEnt instanceof Player && (((Player) damagedEnt).getHealth() - event.getDamage() <= 0)) {
                 event.setCancelled(true);
                 Player player = (Player) damagedEnt;
                 Player killer = (Player) killerEnt;
@@ -36,8 +33,6 @@ public class KillEvent implements Listener {
                 killer.setHealth(killer.getHealthScale());
                 killer.sendTitle(ChatColor.DARK_PURPLE + "You killed " + player.getName() + "!", ChatColor.LIGHT_PURPLE + "Your health was restored!", 5, 25, 5);
                 player.sendTitle(ChatColor.RED + "You was killed by " + killer.getName() + "!", ChatColor.DARK_AQUA + "Don't worry, you will win next time", 5, 25, 5);
-            }
         }
     }
-
 }
