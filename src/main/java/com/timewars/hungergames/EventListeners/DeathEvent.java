@@ -12,24 +12,31 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Random;
+
 public class DeathEvent implements Listener {
 
     @EventHandler
     void onDamage(EntityDamageEvent event) {
-            Entity damagedEnt = event.getEntity();
-            if(! (event instanceof EntityDamageByEntityEvent) && damagedEnt instanceof Player && ((Player) damagedEnt).getHealth() - event.getDamage() <= 0) {
-                    event.setCancelled(true);
-                    Player player = (Player) damagedEnt;
-                    Location dLocation = player.getLocation();
-                    for (ItemStack item : player.getInventory()) {
-                        if (item != null) {
-                            player.getInventory().remove(item);
+        Entity damagedEnt = event.getEntity();
+        if (!(event instanceof EntityDamageByEntityEvent) && damagedEnt instanceof Player && ((Player) damagedEnt).getHealth() - event.getDamage() <= 0) {
+            event.setCancelled(true);
+            Player player = (Player) damagedEnt;
+            Location dLocation = player.getLocation();
+            for (ItemStack item : player.getInventory()) {
+                if (item != null) {
+                    if (new Random().nextInt(10) <= 1) { //20 %
+                        if (item.getAmount() > 1) {
+                            item.setAmount(item.getAmount() / 2);
                             player.getWorld().dropItemNaturally(dLocation, item);
                         }
-                    }
-                    player.getWorld().strikeLightningEffect(dLocation);
-                    player.setGameMode(GameMode.SPECTATOR);
-                    player.sendTitle(ChatColor.RED + "You was killed by the World!", ChatColor.DARK_AQUA + "Don't worry, you will win next time", 5, 25, 5);
+                    } else player.getWorld().dropItemNaturally(dLocation, item);
+                }
             }
+            player.getInventory().clear();
+            player.getWorld().strikeLightningEffect(dLocation);
+            player.setGameMode(GameMode.SPECTATOR);
+            player.sendTitle(ChatColor.RED + "You was killed by the World!", ChatColor.DARK_AQUA + "Don't worry, you will win next time", 5, 25, 5);
+        }
     }
 }

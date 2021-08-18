@@ -10,8 +10,6 @@ public class myItem implements ConfigurationSerializable {
 
     private ItemStack itemStack;
 
-
-
     private int probability;
 
     public myItem(ItemStack itemStack, int probability) {

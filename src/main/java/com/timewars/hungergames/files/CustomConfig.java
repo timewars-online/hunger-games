@@ -16,6 +16,7 @@ public class CustomConfig {
     {
         file = new File(Bukkit.getServer().getPluginManager().getPlugin("HungerGames").getDataFolder(), "items.yml");
 
+
         if(!file.exists())
         {
             System.out.println("Trying to Create New File");
@@ -36,6 +37,7 @@ public class CustomConfig {
         System.out.println("Trying to Save data..");
         try
         {
+
             customFile.save(file);
             System.out.println("Saved!");
         }
