@@ -25,7 +25,6 @@ public final class HungerGames extends JavaPlugin {
 
         MainCommand hgCommands = new MainCommand();
 
-        hgCommands.registerCommand("normal", new mkNorm());
         getCommand("hg").setExecutor(hgCommands);
 
         getServer().getPluginManager().registerEvents(new BreakBlockEvent(), this);

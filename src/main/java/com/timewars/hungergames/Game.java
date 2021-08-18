@@ -134,7 +134,7 @@ public class Game {
 
     public void preparingGame() {
         int countdown;
-        for(countdown = 10; countdown >= 0 & players.size() == MAXPLAYERS; countdown--) {
+        for(countdown = 1; countdown >= 0 & players.size() == MAXPLAYERS; countdown--) {
             for(mPlayer player : players) {
                 player.player.sendTitle(ChatColor.DARK_PURPLE + "" + countdown, "", 2, 6, 2);
             }
