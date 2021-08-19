@@ -46,6 +46,7 @@ public class Game {
         prepareItems();
         readAndFillChests("chests");
         readAndFillChests("super_chests");
+        readAndFillChests("random_super_chests");
         readSpawnSpots();
     }
 
@@ -62,6 +63,13 @@ public class Game {
                 } else if (chestLocation.getBlock().getType() == Material.SHULKER_BOX && tableName.equals("super_chests")) {
                     Inventory inventory = ((ShulkerBox) chestLocation.getBlock().getState()).getInventory();
                     fillChest(inventory, itemsSuperChest, itemSuperCasinoCounter);
+                }
+                else if (chestLocation.getBlock().getType() == Material.WHITE_SHULKER_BOX && tableName.equals("random_super_chests")) {
+                    if ( new Random().nextInt(2) % 2 == 0 ) chestLocation.getBlock().setType(Material.AIR); // or put sign with some text
+                    else {
+                        Inventory inventory = ((ShulkerBox) chestLocation.getBlock().getState()).getInventory();
+                        fillChest(inventory, itemsSuperChest, itemSuperCasinoCounter);
+                    }
                 }
             }
         } catch (SQLException ex) {
@@ -104,7 +112,7 @@ public class Game {
     }
 
     public ItemStack enchantItem(ItemStack item) {
-        List<Enchantment> possible = new ArrayList<Enchantment>();
+        List<Enchantment> possible = new ArrayList<>();
 
         for (Enchantment ench : Enchantment.values()) {
             if (ench.canEnchantItem(item))
@@ -112,10 +120,13 @@ public class Game {
         }
 
         if (possible.size() > 0) {
-
             Enchantment chosen = possible.get(new Random().nextInt(possible.size()));
-
             item.addEnchantment(chosen, 1 + (int) (Math.random() * ((chosen.getMaxLevel() - 1) + 1)));
+
+            if (new Random().nextInt(10) == 1 ) { // 10%
+                chosen = possible.get(new Random().nextInt(possible.size()));
+                item.addEnchantment(chosen, 1 + (int) (Math.random() * ((chosen.getMaxLevel() - 1) + 1)));
+            }
         }
         return item;
     }
