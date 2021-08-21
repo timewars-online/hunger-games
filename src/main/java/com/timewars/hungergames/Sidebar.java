@@ -25,11 +25,26 @@ public class Sidebar {
                 Bukkit.getOnlinePlayers().size() + " alive",
                 "   ",
                 ChatColor.GOLD + ChatColor.BOLD.toString() + "Stats",
-                "Kills: " + ChatColor.GREEN + player.getStatistic(Statistic.PLAYER_KILLS),
+                "Kills: " + ChatColor.GREEN + player.getStatistic(Statistic.PLAYER_KILLS), //count in deathevent
                 "  " ,
                 ChatColor.YELLOW + ChatColor.BOLD.toString() + "Time: " +
-                        ChatColor.RESET + player.getStatistic(Statistic.TIME_SINCE_DEATH)
+                        ChatColor.RESET +
+                        (getGameTime())
         );
+
+    }
+
+    public String getGameTime()
+    {
+        long seconds = (Bukkit.getWorld("world").getTime() - HungerGames.game.getTimeStarted()) / 20;
+
+        String time = null;
+
+        long minutes = seconds/60;
+
+        if (minutes > 0 ) return (minutes + " min " + (seconds - minutes*60) + " s");
+
+        return (seconds + " s");
     }
 
     public void startUpdatingSideBar(Player player) {

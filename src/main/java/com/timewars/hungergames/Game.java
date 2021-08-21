@@ -27,6 +27,12 @@ public class Game {
     public boolean isGameStarted;
     private String mapname;
 
+    public long getTimeStarted() {
+        return timeStarted;
+    }
+
+    private long timeStarted;
+
     private ItemsOperations itemsOperations;
     private ArrayList<myItem> items;
     private ArrayList<myItem> itemsSuperChest;
@@ -198,6 +204,7 @@ public class Game {
                 player.player.sendTitle(ChatColor.GREEN + "Game started!", "", 2, 10, 2);
             }
             isGameStarted = true;
+            timeStarted = Bukkit.getWorld("world").getTime();
         }
     }
 
