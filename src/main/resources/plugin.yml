@@ -5,6 +5,8 @@ api-version: 1.17
 prefix: HG
 authors: [ Heghw ]
 description: Hunger Games plugin for timewars
+depend:
+  - Netherboard
 commands:
     hg:
       description: Main HungerGames command

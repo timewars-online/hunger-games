@@ -18,6 +18,9 @@ public class JoinEvent implements Listener {
         if(HungerGames.game.players.size() == HungerGames.game.MAXPLAYERS) {
             new Thread(() -> HungerGames.game.preparingGame()).start();
         }
+
+        HungerGames.sidebar.createBoard(player);
+        HungerGames.sidebar.startUpdatingSideBar(player);
     }
 
 }

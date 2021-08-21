@@ -2,6 +2,8 @@ package com.timewars.hungergames;
 
 import com.timewars.hungergames.classes.myItem;
 import com.timewars.hungergames.files.ItemsOperations;
+import fr.minuskube.netherboard.Netherboard;
+import fr.minuskube.netherboard.bukkit.BPlayerBoard;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -10,6 +12,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scoreboard.*;
 
 import java.sql.*;
 import java.util.*;
@@ -65,7 +68,7 @@ public class Game {
                     fillChest(inventory, itemsSuperChest, itemSuperCasinoCounter);
                 }
                 else if (chestLocation.getBlock().getType() == Material.WHITE_SHULKER_BOX && tableName.equals("random_super_chests")) {
-                    if ( new Random().nextInt(2) % 2 == 0 ) chestLocation.getBlock().setType(Material.AIR); // or put sign with some text
+                    if ( new Random().nextInt(4) == 0 ) chestLocation.getBlock().setType(Material.AIR); // or put sign with some text
                     else {
                         Inventory inventory = ((ShulkerBox) chestLocation.getBlock().getState()).getInventory();
                         fillChest(inventory, itemsSuperChest, itemSuperCasinoCounter);
@@ -200,7 +203,9 @@ public class Game {
 
     public void startGame() {
 
+
     }
+
 
     class mPlayer {
         private Player player;

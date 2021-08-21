@@ -4,13 +4,16 @@ import com.timewars.hungergames.EventListeners.*;
 
 import com.timewars.hungergames.classes.MainCommand;
 import com.timewars.hungergames.classes.myItem;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class HungerGames extends JavaPlugin {
 
     public static Game game;
+    public static Sidebar sidebar;
 
     {
         ConfigurationSerialization.registerClass(ItemStack.class);
@@ -34,6 +37,14 @@ public final class HungerGames extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new MoveEvent(), this);
 
         game = new Game("world1");
+        sidebar = new Sidebar(this);
+        if (!Bukkit.getOnlinePlayers().isEmpty())
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                sidebar.createBoard(player);
+                sidebar.startUpdatingSideBar(player);
+            }
+
     }
+
 
 }
