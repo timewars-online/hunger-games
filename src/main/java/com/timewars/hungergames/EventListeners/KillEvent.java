@@ -3,6 +3,7 @@ package com.timewars.hungergames.EventListeners;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Statistic;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,6 +23,7 @@ public class KillEvent implements Listener {
             event.setCancelled(true);
             Player player = (Player) damagedEnt;
             Player killer = (Player) killerEnt;
+            killer.setStatistic(Statistic.PLAYER_KILLS, killer.getStatistic(Statistic.PLAYER_KILLS) + 1);
             Location dLocation = player.getLocation();
             for (ItemStack item : player.getInventory()) {
                 if (item != null) {

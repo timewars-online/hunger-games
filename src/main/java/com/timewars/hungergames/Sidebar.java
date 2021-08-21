@@ -18,14 +18,14 @@ public class Sidebar {
 
     public void createBoard(Player player) {
         BPlayerBoard board = Netherboard.instance().createBoard(player,
-                ChatColor.AQUA + "TimeWars");
+                ChatColor.AQUA.toString() + ChatColor.ITALIC + "TimeWars");
 
         board.setAll(
                 ChatColor.YELLOW + ChatColor.BOLD.toString() + "Players"  ,
                 Bukkit.getOnlinePlayers().size() + " alive",
                 "   ",
                 ChatColor.GOLD + ChatColor.BOLD.toString() + "Stats",
-                "Kills: " + ChatColor.GREEN + player.getStatistic(Statistic.PLAYER_KILLS), //count in deathevent
+                "Kills: " + ChatColor.GREEN + player.getStatistic(Statistic.PLAYER_KILLS),
                 "  " ,
                 ChatColor.YELLOW + ChatColor.BOLD.toString() + "Time: " +
                         ChatColor.RESET +

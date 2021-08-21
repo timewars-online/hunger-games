@@ -12,10 +12,11 @@ public class JoinEvent implements Listener {
     void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         HungerGames.game.playerJoined(player);
-        if(!HungerGames.game.loc.isEmpty()) {
-            player.teleport(HungerGames.game.loc.element());
+
+        if(!HungerGames.game.getLoc().isEmpty()) {
+            player.teleport(HungerGames.game.getLoc().element());
         }
-        if(HungerGames.game.players.size() == HungerGames.game.MAXPLAYERS) {
+        if(HungerGames.game.getPlayers().size() == HungerGames.game.getMAXPLAYERS()) {
             new Thread(() -> HungerGames.game.preparingGame()).start();
         }
 

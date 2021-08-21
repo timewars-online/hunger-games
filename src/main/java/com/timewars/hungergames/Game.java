@@ -2,34 +2,25 @@ package com.timewars.hungergames;
 
 import com.timewars.hungergames.classes.myItem;
 import com.timewars.hungergames.files.ItemsOperations;
-import fr.minuskube.netherboard.Netherboard;
-import fr.minuskube.netherboard.bukkit.BPlayerBoard;
 import org.bukkit.*;
-import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scoreboard.*;
 
 import java.sql.*;
 import java.util.*;
 
 public class Game {
-    public LinkedList<Location> loc; //change later
-    LinkedList<Boolean> used;
-    public LinkedList<mPlayer> players;
-    public int MAXPLAYERS;
 
+    private LinkedList<Location> loc; //change later
+    private LinkedList<mPlayer> players;
+    private int MAXPLAYERS;
 
     public boolean isGameStarted;
     private String mapname;
-
-    public long getTimeStarted() {
-        return timeStarted;
-    }
 
     private long timeStarted;
 
@@ -42,7 +33,7 @@ public class Game {
     Game(String mapname) {
         players = new LinkedList<>();
         loc = new LinkedList<>();
-        MAXPLAYERS = 1; //gain from api
+        MAXPLAYERS = 2; //gain from api
         isGameStarted = false;
         this.mapname = mapname;
 
@@ -176,13 +167,6 @@ public class Game {
         players.add(playerShell);
     }
 
-    public mPlayer getPlayerShell(Player player) {
-        for (mPlayer p : players) {
-            if (p.isShell(player)) return p;
-        }
-        return null;
-    }
-
     public void playerDisconnected(Player player) {
         players.removeIf(p -> p.isShell(player));
     }
@@ -213,7 +197,6 @@ public class Game {
 
     }
 
-
     class mPlayer {
         private Player player;
         private long lastHeatedTime, lastHealUsedTime, lastFeedUsedTime, remainingHeal, remainingFeed;
@@ -227,6 +210,29 @@ public class Game {
             return p == player;
         }
 
+    }
+
+    public mPlayer getPlayerShell(Player player) {
+        for (mPlayer p : players) {
+            if (p.isShell(player)) return p;
+        }
+        return null;
+    }
+
+    public LinkedList<mPlayer> getPlayers() {
+        return players;
+    }
+
+    public int getMAXPLAYERS() {
+        return MAXPLAYERS;
+    }
+
+    public LinkedList<Location> getLoc() {
+        return loc;
+    }
+
+    public long getTimeStarted() {
+        return timeStarted;
     }
 
 }
