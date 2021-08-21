@@ -43,7 +43,6 @@ public final class HungerGames extends JavaPlugin {
                 sidebar.createBoard(player);
                 sidebar.startUpdatingSideBar(player);
             }
-
     }
 
 
