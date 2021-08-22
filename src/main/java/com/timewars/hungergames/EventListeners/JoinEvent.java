@@ -20,8 +20,12 @@ public class JoinEvent implements Listener {
             new Thread(() -> HungerGames.game.preparingGame()).start();
         }
 
-        HungerGames.sidebar.createBoard(player);
         HungerGames.sidebar.startUpdatingSideBar(player);
+    }
+
+    void gameNotStarted(Player player) {
+        player.setWalkSpeed(0);
+        player.setFlySpeed(0);
     }
 
 }

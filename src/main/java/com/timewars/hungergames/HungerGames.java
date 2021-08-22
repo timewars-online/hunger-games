@@ -36,14 +36,7 @@ public final class HungerGames extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new QuitEvent(), this);
         getServer().getPluginManager().registerEvents(new MoveEvent(), this);
 
-        game = new Game("world1");
+        game = new Game("world1", this);
         sidebar = new Sidebar(this);
-        if (!Bukkit.getOnlinePlayers().isEmpty())
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                sidebar.createBoard(player);
-                sidebar.startUpdatingSideBar(player);
-            }
     }
-
-
 }

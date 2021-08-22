@@ -10,7 +10,7 @@ public class MoveEvent implements Listener {
     @EventHandler
     void onPlayerMove(PlayerMoveEvent event) {
         if(!HungerGames.game.isGameStarted) {
-            event.setCancelled(true);
+            //event.setCancelled(true);
         }
     }
 

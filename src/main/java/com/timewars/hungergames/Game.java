@@ -1,8 +1,12 @@
 package com.timewars.hungergames;
 
+import com.timewars.hungergames.classes.mPlayer;
 import com.timewars.hungergames.classes.myItem;
 import com.timewars.hungergames.files.ItemsOperations;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Chest;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.enchantments.Enchantment;
@@ -30,12 +34,15 @@ public class Game {
     private int itemCasinoCounter;
     private int itemSuperCasinoCounter;
 
-    Game(String mapname) {
+    private Sidebar sidebar;
+
+    Game(String mapname, HungerGames hg) {
+        this.mapname = mapname;
+
         players = new LinkedList<>();
         loc = new LinkedList<>();
         MAXPLAYERS = 2; //gain from api
         isGameStarted = false;
-        this.mapname = mapname;
 
         itemsOperations = new ItemsOperations();
         items = new ArrayList<>();
@@ -173,7 +180,7 @@ public class Game {
 
     public void preparingGame() {
         int countdown;
-        for (countdown = 1; countdown >= 0 & players.size() == MAXPLAYERS; countdown--) {
+        for (countdown = 5; countdown >= 0 & players.size() == MAXPLAYERS; countdown--) {
             for (mPlayer player : players) {
                 player.player.sendTitle(ChatColor.DARK_PURPLE + "" + countdown, "", 2, 6, 2);
             }
@@ -190,27 +197,17 @@ public class Game {
             isGameStarted = true;
             timeStarted = Bukkit.getWorld("world").getTime();
         }
+        startGame();
     }
 
     public void startGame() {
-
-
+        for(mPlayer shell : players) {
+            Player player = shell.player;
+            player.setFlySpeed(1);
+            player.setWalkSpeed(1);
+        }
     }
 
-    class mPlayer {
-        private Player player;
-        private long lastHeatedTime, lastHealUsedTime, lastFeedUsedTime, remainingHeal, remainingFeed;
-
-        mPlayer(Player p) {
-            player = p;
-            lastHeatedTime = -1000000000;
-        }
-
-        public boolean isShell(Player p) {
-            return p == player;
-        }
-
-    }
 
     public mPlayer getPlayerShell(Player player) {
         for (mPlayer p : players) {
