@@ -12,5 +12,4 @@ public class mPlayer {
     public boolean isShell(Player p) {
         return p == player;
     }
-
 }

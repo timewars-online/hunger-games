@@ -1,5 +1,6 @@
 package com.timewars.hungergames;
 
+import com.timewars.hungergames.classes.Zone;
 import com.timewars.hungergames.classes.mPlayer;
 import com.timewars.hungergames.classes.myItem;
 import com.timewars.hungergames.files.ItemsOperations;
@@ -22,6 +23,8 @@ public class Game {
     private LinkedList<Location> loc; //change later
     private LinkedList<mPlayer> players;
     private int MAXPLAYERS;
+    private int radius;
+    private Location center;
 
     public boolean isGameStarted;
     private String mapname;
@@ -33,11 +36,15 @@ public class Game {
     private ArrayList<myItem> itemsSuperChest;
     private int itemCasinoCounter;
     private int itemSuperCasinoCounter;
+    HungerGames pl;
+
+    Zone zone;
 
     private Sidebar sidebar;
 
     Game(String mapname, HungerGames hg) {
         this.mapname = mapname;
+        pl = hg;
 
         players = new LinkedList<>();
         loc = new LinkedList<>();
@@ -55,6 +62,9 @@ public class Game {
         readAndFillChests("super_chests");
         readAndFillChests("random_super_chests");
         readSpawnSpots();
+
+        readZone();
+        zone = new Zone(center, radius);
     }
 
     public void readAndFillChests(String tableName) {
@@ -91,6 +101,20 @@ public class Game {
             ResultSet spawnspots = statement.executeQuery(f.format("SELECT xcord, ycord, zcord FROM spawnspot WHERE mapname = '%s'", mapname).toString());
             while (spawnspots.next()) {
                 loc.add(new Location(Bukkit.getServer().getWorld("world"), spawnspots.getInt(1), spawnspots.getInt(2), spawnspots.getInt(3)));
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+    }
+
+    public void readZone() {
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/data?autoReconnect=true&useSSL=false", "root", "")) {
+            Statement statement = connection.createStatement();
+            Formatter f = new Formatter();
+            ResultSet zone = statement.executeQuery(f.format("SELECT xcord, ycord, zcord, radius FROM map_border WHERE mapname = '%s'", mapname).toString());
+            while (zone.next()) {
+                center = new Location(Bukkit.getWorld("world"), zone.getInt(1), zone.getInt(2), zone.getInt(3));
+                radius = zone.getInt(4);
             }
         } catch (SQLException ex) {
             System.out.println(ex);
@@ -179,6 +203,7 @@ public class Game {
     }
 
     public void preparingGame() {
+        zone.createZone();
         int countdown;
         for (countdown = 5; countdown >= 0 & players.size() == MAXPLAYERS; countdown--) {
             for (mPlayer player : players) {
@@ -200,8 +225,9 @@ public class Game {
         startGame();
     }
 
-    public void startGame() {
 
+    public void startGame() {
+        zone.startMove(10);
     }
 
 
