@@ -41,7 +41,7 @@ public class Game {
 
         players = new LinkedList<>();
         loc = new LinkedList<>();
-        MAXPLAYERS = 2; //gain from api
+        MAXPLAYERS = 1; //gain from api
         isGameStarted = false;
 
         itemsOperations = new ItemsOperations();
@@ -201,11 +201,7 @@ public class Game {
     }
 
     public void startGame() {
-        for(mPlayer shell : players) {
-            Player player = shell.player;
-            player.setFlySpeed(1);
-            player.setWalkSpeed(1);
-        }
+
     }
 
 
