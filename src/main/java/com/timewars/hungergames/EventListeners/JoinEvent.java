@@ -1,6 +1,7 @@
 package com.timewars.hungergames.EventListeners;
 
 import com.timewars.hungergames.HungerGames;
+import com.timewars.hungergames.classes.mPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,13 +17,14 @@ public class JoinEvent implements Listener {
         HungerGames.game.playerJoined(player);
 
         if(!HungerGames.game.getLoc().isEmpty()) {
-            player.teleport(HungerGames.game.getLoc().element());
+            player.teleport(HungerGames.game.getLoc().pop());
         }
         if(!HungerGames.game.isGameStarted && HungerGames.game.getPlayers().size() == HungerGames.game.getMAXPLAYERS()) {
             new Thread(() -> HungerGames.game.preparingGame()).start();
         }
 
-        HungerGames.sidebar.startUpdatingSideBar(player);
+        mPlayer mplayer = HungerGames.game.getPlayerShell(player);
+        HungerGames.sidebar.startUpdatingSideBar(mplayer);
     }
 
 }

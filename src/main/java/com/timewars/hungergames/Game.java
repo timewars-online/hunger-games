@@ -4,10 +4,7 @@ import com.timewars.hungergames.classes.Zone;
 import com.timewars.hungergames.classes.mPlayer;
 import com.timewars.hungergames.classes.myItem;
 import com.timewars.hungergames.files.ItemsOperations;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Chest;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.enchantments.Enchantment;
@@ -21,6 +18,7 @@ import java.util.*;
 public class Game {
 
     private LinkedList<Location> loc; //change later
+
     private LinkedList<mPlayer> players;
     private int MAXPLAYERS;
     private int radius;
@@ -64,7 +62,9 @@ public class Game {
         readSpawnSpots();
 
         readZone();
+
         zone = new Zone(center, radius);
+        zone.createZone();
     }
 
     public void readAndFillChests(String tableName) {
@@ -115,6 +115,7 @@ public class Game {
             while (zone.next()) {
                 center = new Location(Bukkit.getWorld("world"), zone.getInt(1), zone.getInt(2), zone.getInt(3));
                 radius = zone.getInt(4);
+                System.out.println(radius);
             }
         } catch (SQLException ex) {
             System.out.println(ex);
@@ -203,7 +204,7 @@ public class Game {
     }
 
     public void preparingGame() {
-        zone.createZone();
+
         int countdown;
         for (countdown = 5; countdown >= 0 & players.size() == MAXPLAYERS; countdown--) {
             for (mPlayer player : players) {
@@ -227,7 +228,7 @@ public class Game {
 
 
     public void startGame() {
-        zone.startMove(10);
+        zone.startMove(20);
     }
 
 

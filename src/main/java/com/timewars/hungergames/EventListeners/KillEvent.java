@@ -1,5 +1,7 @@
 package com.timewars.hungergames.EventListeners;
 
+import com.timewars.hungergames.HungerGames;
+import com.timewars.hungergames.classes.mPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -23,7 +25,10 @@ public class KillEvent implements Listener {
             event.setCancelled(true);
             Player player = (Player) damagedEnt;
             Player killer = (Player) killerEnt;
-            killer.setStatistic(Statistic.PLAYER_KILLS, killer.getStatistic(Statistic.PLAYER_KILLS) + 1);
+            mPlayer mKiller = HungerGames.game.getPlayerShell(killer);
+            mPlayer mplayer = HungerGames.game.getPlayerShell(player);
+            mKiller.addKill();
+
             Location dLocation = player.getLocation();
             for (ItemStack item : player.getInventory()) {
                 if (item != null) {
@@ -39,8 +44,13 @@ public class KillEvent implements Listener {
             player.setGameMode(GameMode.SPECTATOR);
             player.setHealth(player.getHealthScale());
             killer.setHealth(killer.getHealthScale());
-            killer.sendTitle(ChatColor.DARK_PURPLE + "You killed " + player.getName() + "!", ChatColor.LIGHT_PURPLE + "Your health was restored!", 5, 25, 5);
-            player.sendTitle(ChatColor.RED + "You was killed by " + killer.getName() + "!", ChatColor.DARK_AQUA + "Don't worry, you will win next time", 5, 25, 5);
+
+            HungerGames.game.getPlayers().remove(mplayer);
+
+            killer.sendTitle(ChatColor.DARK_PURPLE + "You killed " + player.getName() + "!",
+                    ChatColor.LIGHT_PURPLE + "Your health was restored!", 5, 25, 5);
+            player.sendTitle(ChatColor.RED + "You was killed by " + killer.getName() + "!",
+                    ChatColor.DARK_AQUA + "Don't worry, you will win next time", 5, 25, 5);
         }
     }
 }

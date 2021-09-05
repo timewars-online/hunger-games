@@ -1,5 +1,7 @@
 package com.timewars.hungergames.EventListeners;
 
+import com.timewars.hungergames.HungerGames;
+import com.timewars.hungergames.classes.mPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -22,6 +24,7 @@ public class DeathEvent implements Listener {
         if (!(event instanceof EntityDamageByEntityEvent) && damagedEnt instanceof Player && ((Player) damagedEnt).getHealth() - event.getDamage() <= 0) {
             event.setCancelled(true);
             Player player = (Player) damagedEnt;
+            mPlayer mplayer = HungerGames.game.getPlayerShell(player);
             Location dLocation = player.getLocation();
             for (ItemStack item : player.getInventory()) {
                 if (item != null) {
@@ -36,6 +39,9 @@ public class DeathEvent implements Listener {
             player.getInventory().clear();
             player.getWorld().strikeLightningEffect(dLocation);
             player.setGameMode(GameMode.SPECTATOR);
+
+            HungerGames.game.getPlayers().remove(mplayer);
+
             player.sendTitle(ChatColor.RED + "You was killed by the World!", ChatColor.DARK_AQUA + "Don't worry, you will win next time", 5, 25, 5);
         }
     }

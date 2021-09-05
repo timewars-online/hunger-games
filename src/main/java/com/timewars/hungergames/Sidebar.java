@@ -1,10 +1,8 @@
 package com.timewars.hungergames;
 
-//import fr.minuskube.netherboard.Netherboard;
-//import fr.minuskube.netherboard.bukkit.BPlayerBoard;
+import com.timewars.hungergames.classes.mPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
 
@@ -17,23 +15,7 @@ public class Sidebar {
         this.hungerGamesPlugin = hungerGamesPlugin;
     }
 
-    public void createBoard(Player player) {
-//        BPlayerBoard board = Netherboard.instance().createBoard(player,
-//                ChatColor.AQUA.toString() + ChatColor.ITALIC + "TimeWars");
-//
-//
-//        board.setAll(
-//                ChatColor.YELLOW + ChatColor.BOLD.toString() + "Players"  ,
-//                Bukkit.getOnlinePlayers().size() + " alive",
-//                "   ",
-//                ChatColor.GOLD + ChatColor.BOLD.toString() + "Stats",
-//                "Kills: " + ChatColor.GREEN + player.getStatistic(Statistic.PLAYER_KILLS),
-//                "  " ,
-//                ChatColor.YELLOW + ChatColor.BOLD.toString() + "Time: " +
-//                        ChatColor.RESET +
-//                        (getGameTime())
-//        );
-
+    public void createBoard(mPlayer mplayer) {
 
         ScoreboardManager manager = Bukkit.getScoreboardManager();
         Scoreboard board = manager.getNewScoreboard();
@@ -49,8 +31,8 @@ public class Sidebar {
         Score score1 = obj.getScore(ChatColor.YELLOW + ChatColor.BOLD.toString() + "Players");
         score1.setScore(6);
 
-        Score score2 = obj.getScore(Bukkit.getOnlinePlayers().size() + " alive(NO)");
-        score2.setScore(5); //TODO change this to another way
+        Score score2 = obj.getScore(HungerGames.game.getPlayers().size() + " alive");
+        score2.setScore(5);
 
         Score score3 = obj.getScore("   ");
         score3.setScore(4);
@@ -58,8 +40,8 @@ public class Sidebar {
         Score score4 = obj.getScore(ChatColor.GOLD + ChatColor.BOLD.toString() + "Stats");
         score4.setScore(3);
 
-        Score score5 = obj.getScore("Kills: " + ChatColor.GREEN + player.getStatistic(Statistic.PLAYER_KILLS));
-        score5.setScore(2); //TODO change this to another way
+        Score score5 = obj.getScore("Kills: " + ChatColor.GREEN + mplayer.getKills());
+        score5.setScore(2);
 
         Score score6 = obj.getScore("  " );
         score6.setScore(1);
@@ -68,7 +50,7 @@ public class Sidebar {
                         ChatColor.RESET + (getGameTime()));
         score7.setScore(0);
 
-        player.setScoreboard(board);
+        mplayer.player.setScoreboard(board);
     }
 
     public String getGameTime()
@@ -84,7 +66,7 @@ public class Sidebar {
         return (seconds + " s");
     }
 
-    public void startUpdatingSideBar(Player player) {
+    public void startUpdatingSideBar(mPlayer player) {
 
         taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(hungerGamesPlugin, new Runnable() {
             @Override

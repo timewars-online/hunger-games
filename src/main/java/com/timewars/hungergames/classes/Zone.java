@@ -12,10 +12,11 @@ public class Zone {
     public Zone(Location c, int r) {
         center = c;
         radius = r;
+        System.out.println();
         try {
             brd = Bukkit.getWorld("world").getWorldBorder();
         } catch (NullPointerException e) {
-            System.out.println("SUCK");
+            System.out.println("there is no border lol");
         }
     }
 
@@ -29,6 +30,6 @@ public class Zone {
     }
 
     public void startMove(int time) {
-        brd.setSize(-1, time);
+        brd.setSize(5, time);
     }
 }
