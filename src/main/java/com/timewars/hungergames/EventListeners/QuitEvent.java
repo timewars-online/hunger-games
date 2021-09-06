@@ -15,6 +15,10 @@ public class QuitEvent implements Listener {
         LobbyBoard board = new LobbyBoard(player.getUniqueId());
         if (board.hasID()) board.stop();
         HungerGames.game.playerDisconnected(player);
+
+        HungerGames.game.checkAlivePlayers();
+
+        //TODO kill game if 0 players
     }
 
 }

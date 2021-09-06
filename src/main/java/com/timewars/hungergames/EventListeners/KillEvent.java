@@ -51,6 +51,8 @@ public class KillEvent implements Listener {
                     ChatColor.LIGHT_PURPLE + "Your health was restored!", 5, 25, 5);
             player.sendTitle(ChatColor.RED + "You was killed by " + killer.getName() + "!",
                     ChatColor.DARK_AQUA + "Don't worry, you will win next time", 5, 25, 5);
+
+            HungerGames.game.checkAlivePlayers();
         }
     }
 }

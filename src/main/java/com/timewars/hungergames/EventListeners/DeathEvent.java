@@ -43,6 +43,7 @@ public class DeathEvent implements Listener {
             HungerGames.game.getPlayers().remove(mplayer);
 
             player.sendTitle(ChatColor.RED + "You was killed by the World!", ChatColor.DARK_AQUA + "Don't worry, you will win next time", 5, 25, 5);
+            HungerGames.game.checkAlivePlayers();
         }
     }
 }

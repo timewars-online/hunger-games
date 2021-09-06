@@ -16,8 +16,8 @@ import java.sql.*;
 import java.util.*;
 
 public class Game {
-
-    private LinkedList<Location> loc; //change later
+    HungerGames pl;
+    private LinkedList<Location> spawnpoints; //change later
 
     private LinkedList<mPlayer> players;
     private int MAXPLAYERS;
@@ -38,9 +38,6 @@ public class Game {
     private ArrayList<myItem> itemsSuperChest;
     private int itemCasinoCounter;
     private int itemSuperCasinoCounter;
-    HungerGames pl;
-
-
 
     private Sidebar sidebar;
 
@@ -49,7 +46,7 @@ public class Game {
         pl = hg;
 
         players = new LinkedList<>();
-        loc = new LinkedList<>();
+        spawnpoints = new LinkedList<>();
         MAXPLAYERS = 1; //gain from api
         isGameStarted = false;
 
@@ -104,7 +101,7 @@ public class Game {
             Formatter f = new Formatter();
             ResultSet spawnspots = statement.executeQuery(f.format("SELECT xcord, ycord, zcord FROM spawnspot WHERE mapname = '%s'", mapname).toString());
             while (spawnspots.next()) {
-                loc.add(new Location(Bukkit.getServer().getWorld("world"), spawnspots.getInt(1), spawnspots.getInt(2), spawnspots.getInt(3)));
+                spawnpoints.add(new Location(Bukkit.getServer().getWorld("world"), spawnspots.getInt(1), spawnspots.getInt(2), spawnspots.getInt(3)));
             }
         } catch (SQLException ex) {
             System.out.println(ex);
@@ -236,6 +233,20 @@ public class Game {
         zone.startMove();
     }
 
+    public void checkAlivePlayers() {
+        if (players.size() == 1 ) endGame();
+    }
+
+    public void endGame() {
+        if (players.size() == 1) {
+            Player p = players.element().player;
+
+            p.sendTitle(ChatColor.DARK_PURPLE + "You won!",
+                    ChatColor.LIGHT_PURPLE + "Congratulations!", 5, 25, 5);
+        }
+
+        //TODO end game / teleport to lobby
+    }
 
     public mPlayer getPlayerShell(Player player) {
         for (mPlayer p : players) {
@@ -252,8 +263,8 @@ public class Game {
         return MAXPLAYERS;
     }
 
-    public LinkedList<Location> getLoc() {
-        return loc;
+    public LinkedList<Location> getSpawnpoints() {
+        return spawnpoints;
     }
 
     public long getTimeStarted() {

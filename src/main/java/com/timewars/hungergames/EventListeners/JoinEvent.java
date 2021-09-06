@@ -6,8 +6,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 public class JoinEvent implements Listener {
 
@@ -16,8 +14,8 @@ public class JoinEvent implements Listener {
         Player player = event.getPlayer();
         HungerGames.game.playerJoined(player);
 
-        if(!HungerGames.game.getLoc().isEmpty()) {
-            player.teleport(HungerGames.game.getLoc().pop());
+        if(!HungerGames.game.getSpawnpoints().isEmpty()) {
+            player.teleport(HungerGames.game.getSpawnpoints().pop());
         }
         if(!HungerGames.game.isGameStarted && HungerGames.game.getPlayers().size() == HungerGames.game.getMAXPLAYERS()) {
             new Thread(() -> HungerGames.game.preparingGame()).start();
