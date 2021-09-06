@@ -21,8 +21,12 @@ public class Game {
 
     private LinkedList<mPlayer> players;
     private int MAXPLAYERS;
+
     private int radius;
+    private int timeToShrink;
+    private int endSize;
     private Location center;
+    private Zone zone;
 
     public boolean isGameStarted;
     private String mapname;
@@ -36,7 +40,7 @@ public class Game {
     private int itemSuperCasinoCounter;
     HungerGames pl;
 
-    Zone zone;
+
 
     private Sidebar sidebar;
 
@@ -63,7 +67,7 @@ public class Game {
 
         readZone();
 
-        zone = new Zone(center, radius);
+        zone = new Zone(center, radius, timeToShrink, endSize);
         zone.createZone();
     }
 
@@ -111,11 +115,12 @@ public class Game {
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/data?autoReconnect=true&useSSL=false", "root", "")) {
             Statement statement = connection.createStatement();
             Formatter f = new Formatter();
-            ResultSet zone = statement.executeQuery(f.format("SELECT xcord, ycord, zcord, radius FROM map_border WHERE mapname = '%s'", mapname).toString());
+            ResultSet zone = statement.executeQuery(f.format("SELECT xcord, ycord, zcord, radius, time, endsize FROM map_border WHERE mapname = '%s'", mapname).toString());
             while (zone.next()) {
                 center = new Location(Bukkit.getWorld("world"), zone.getInt(1), zone.getInt(2), zone.getInt(3));
                 radius = zone.getInt(4);
-                System.out.println(radius);
+                timeToShrink = zone.getInt(5);
+                endSize = zone.getInt(6);
             }
         } catch (SQLException ex) {
             System.out.println(ex);
@@ -228,7 +233,7 @@ public class Game {
 
 
     public void startGame() {
-        zone.startMove(20);
+        zone.startMove();
     }
 
 

@@ -7,11 +7,15 @@ import org.bukkit.WorldBorder;
 public class Zone {
     Location center;
     int radius;
+    int timeToShrink;
+    int endSize;
     WorldBorder brd;
 
-    public Zone(Location c, int r) {
+    public Zone(Location c, int r, int t, int endSize) {
         center = c;
         radius = r;
+        timeToShrink = t;
+        this.endSize = endSize;
         System.out.println();
         try {
             brd = Bukkit.getWorld("world").getWorldBorder();
@@ -29,7 +33,7 @@ public class Zone {
         brd.setWarningTime(0);
     }
 
-    public void startMove(int time) {
-        brd.setSize(5, time);
+    public void startMove() {
+        brd.setSize(endSize, timeToShrink);
     }
 }
